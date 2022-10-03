@@ -20,7 +20,7 @@ public class Client {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "name")
+    @Column(name = "username")
     @NotEmpty(message = "Name must be not empty")
     @Size(max=100, message="Name must be shorter than 100 characters")
     private String name;

@@ -5,6 +5,6 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class ClientErrorResponse {
+public class AuthErrorResponse {
     private String message;
 }

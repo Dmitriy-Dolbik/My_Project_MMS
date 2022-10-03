@@ -3,6 +3,7 @@ package com.dolbik.MobileOperator.util;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
+
 import java.util.List;
 
 public class ErrorUtil {
@@ -16,6 +17,6 @@ public class ErrorUtil {
                     .append(error.getDefaultMessage() == null ? error.getCode() : error.getDefaultMessage())
                     .append("; ");
         }
-        throw new ClientNotAddException(errorMsg.toString());
+        throw new AuthException(errorMsg.toString());
     }
 }
