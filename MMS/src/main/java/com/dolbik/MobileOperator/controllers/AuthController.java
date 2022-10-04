@@ -1,23 +1,17 @@
 package com.dolbik.MobileOperator.controllers;
 
-import com.dolbik.MobileOperator.dto.ClientDTO;
 import com.dolbik.MobileOperator.models.Client;
 import com.dolbik.MobileOperator.services.RegistrationService;
-import com.dolbik.MobileOperator.util.AuthErrorResponse;
-import com.dolbik.MobileOperator.util.AuthException;
 import com.dolbik.MobileOperator.util.ClientValidator;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-import static com.dolbik.MobileOperator.util.ErrorUtil.returnErrorsToClient;
-
-@RestController
+@Controller
 @RequestMapping("/auth")
 public class AuthController {
     private final ClientValidator clientValidator;
@@ -30,27 +24,26 @@ public class AuthController {
         this.modelMapper = modelMapper;
     }
 
-    /*@GetMapping()
+    @GetMapping("/login")
     public String loginPage(){
         return "auth/login";
     }
     @GetMapping("/registration")
-    public String registrationPage(@ModelAttribute("Client") Client client){
+    public String registrationPage(@ModelAttribute("client") Client client){
         return "auth/registration";
-    }*/
+    }
 
     @PostMapping("/registration")
-    public ResponseEntity<HttpStatus> performRegistration(@RequestBody @Valid ClientDTO clientDTO,
+    public String performRegistration(@ModelAttribute("client") @Valid Client client,
                                                           BindingResult bindingResult){
-        Client client = convertToClient(clientDTO);
         clientValidator.validate(client, bindingResult);
         if (bindingResult.hasErrors()){
-            returnErrorsToClient(bindingResult);
+            return "auth/registration";
         }
         registrationService.register(client);
-        return ResponseEntity.ok(HttpStatus.OK);
+        return "redirect:/auth/login";
     }
-    public Client convertToClient(ClientDTO clientDTO){
+    /*public Client convertToClient(ClientDTO clientDTO){
         return modelMapper.map(clientDTO, Client.class);
     }
     @ExceptionHandler
@@ -58,6 +51,6 @@ public class AuthController {
         AuthErrorResponse response = new AuthErrorResponse(
                 auth.getMessage());
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-    }
+    }*/
 
 }
